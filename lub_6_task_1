@@ -1,1 +1,49 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <numeric> // For std::accumulate (though not strictly needed for this problem, good to have in general)
 
+int main() {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+
+    std::string P, T;
+    std::cin >> P >> T;
+
+    std::vector<int> occurrences;
+    long long total_comparisons = 0; // Use long long for comparisons to be safe, though int should suffice for 100*100
+
+    int n = T.length();
+    int m = P.length();
+
+    // Iterate through all possible starting positions for P in T
+    for (int i = 0; i <= n - m; ++i) {
+        bool match = true;
+        // Compare P with the substring of T starting at index i
+        for (int j = 0; j < m; ++j) {
+            total_comparisons++; // Each character comparison counts
+            if (T[i + j] != P[j]) {
+                match = false;
+                break; // Mismatch found, no need to compare further for this starting position
+            }
+        }
+        if (match) {
+            occurrences.push_back(i + 1); // Store 1-indexed position
+        }
+    }
+
+    // Output occurrences
+    if (occurrences.empty()) {
+        std::cout << 0 << std::endl;
+    } else {
+        for (size_t i = 0; i < occurrences.size(); ++i) {
+            std::cout << occurrences[i] << (i == occurrences.size() - 1 ? "" : " ");
+        }
+        std::cout << std::endl;
+    }
+
+    // Output total comparisons
+    std::cout << total_comparisons << std::endl;
+
+    return 0;
+}
