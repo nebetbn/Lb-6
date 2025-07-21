@@ -1,1 +1,53 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <numeric> // Не обов'язково, але корисно для деяких задач
 
+int main() {
+    // Прискорюємо ввід/вивід
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+
+    std::string P, T;
+    std::cin >> P >> T; // Зчитуємо шаблон P і текст T
+
+    std::vector<int> occurrences; // Вектор для зберігання позицій входжень
+    long long total_comparisons = 0; // Лічильник загальної кількості порівнянь
+
+    int n = T.length(); // Довжина тексту T
+    int m = P.length(); // Довжина шаблону P
+
+    // Ітеруємося по всіх можливих початкових позиціях для P в T
+    // 'i' - це поточна початкова позиція в T
+    for (int i = 0; i <= n - m; ++i) {
+        bool match = true; // Припускаємо, що знайдено відповідність
+        // Порівнюємо P з підрядком T, що починається з індексу 'i', справа наліво
+        // 'j' йде від m-1 до 0 (індекси P)
+        // Відповідний символ у T знаходиться за індексом i + j
+        for (int j = m - 1; j >= 0; --j) {
+            total_comparisons++; // Кожне порівняння символів враховується
+            if (T[i + j] != P[j]) { // Якщо символи не збігаються
+                match = false; // Це не відповідність
+                break; // Немає сенсу порівнювати далі для цієї початкової позиції
+            }
+        }
+        if (match) { // Якщо знайдено повну відповідність
+            occurrences.push_back(i + 1); // Зберігаємо 1-індексовану позицію
+        }
+    }
+
+    // Виводимо позиції входжень
+    if (occurrences.empty()) { // Якщо вектор порожній, значить, входжень не було
+        std::cout << 0 << std::endl;
+    } else {
+        for (size_t i = 0; i < occurrences.size(); ++i) {
+            std::cout << occurrences[i] << (i == occurrences.size() - 1 ? "" : " "); // Виводимо позиції через пробіл
+        }
+        std::cout << std::endl;
+    }
+
+    // Виводимо загальну кількість порівнянь
+    std::cout << total_comparisons << std::endl;
+
+    return 0;
+}
