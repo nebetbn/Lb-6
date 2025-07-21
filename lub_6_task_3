@@ -1,1 +1,40 @@
+#include <iostream>
+#include <string>
+#include <vector>
 
+// Функція для прискорення вводу/виводу
+void fast_io() {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+}
+
+int main() {
+    fast_io();
+
+    std::string s;
+    std::cin >> s;
+
+    int l, r;
+    std::cin >> l >> r;
+
+    // Перехід до 0-індексації
+    l--;
+    r--;
+
+    // Виділяємо підрядок
+    std::string sub = s.substr(l, r - l + 1);
+
+    // Кількість власних суфіксів дорівнює довжині підрядка мінус один
+    int proper_suffix_count = sub.length() - 1;
+    if (proper_suffix_count < 0) {
+        proper_suffix_count = 0;
+    }
+    std::cout << proper_suffix_count << std::endl;
+
+    // Виводимо всі власні суфікси в порядку спадання довжини
+    for (int i = 1; i < sub.length(); ++i) {
+        std::cout << sub.substr(i) << std::endl;
+    }
+
+    return 0;
+}
